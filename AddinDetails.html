@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+      /* Style the body, set up for darkmode/light mode read from browser */
+body {  
+  --txtColor : black;
+  --Bg_color : whitesmoke;
+  --BordersX : gray;
+
+  color            : var(--txtColor);
+  background-color : var(--Bg_color);
+  }
+@media (prefers-color-scheme: dark) {
+  body {
+    --txtColor : whitesmoke;
+    --Bg_color : #1d1e22;
+    --BordersX : gray;
+    }
+  }
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: none;
+  color: var(--txtColor);
+  background-color: var(--Bg_color);
+}
+
+/* Style the buttons inside the tab */
+      .tab button {
+          color: inherit;
+          background-color: inherit;
+          float: left;
+          border: 1px solid var(--BordersX);
+          outline: none;
+          cursor: pointer;
+          width: 33.333%;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+          font-weight: bold;
+      }
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: var(--Bg_color);
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: var(--Bg_color);
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 16px;
+  border: 1px solid var(--BordersX);
+  border-top: none;
+}
+
+      .local-listings {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min-content, 200px));
+      }
+
+      /* Style the "un"sorted list [allows columns and rows] */
+      ul {
+          list-style-type: none;
+          counter-reset: section;
+          -moz-column-count: 3;
+          -moz-column-gap: 20px;
+          -webkit-column-count: 3;
+          -webkit-column-gap: 20px;
+          column-count: 3;
+          column-gap: 20px;
+      }
+      /* Style the list */
+          ul li {
+              padding-left: 30px;
+              position: relative;
+          }
+      /* Style the list item prefix [if any] */
+ul li:before {
+    margin: 0 0 0 -34px;
+    text-align: right;
+    width: 2em;
+    display: inline-block;
+    position: absolute;
+    height: 100%;
+}
+
+      /* unvisited link */
+      a:link {
+          color: var(--txtColor);
+          text-decoration: none;
+          font-weight: bold;
+      }
+
+      /* visited link */
+      a:visited {
+          color: var(--txtColor);
+          text-decoration: none;
+          font-weight: bold;
+      }
+
+      /* mouse over link */
+      a:hover {
+          color: var(--txtColor);
+          text-decoration: none;
+          font-weight: bold;
+      }
+
+      /* selected link */
+      a:active {
+          color: var(--txtColor);
+          text-decoration: none;
+          font-weight: bold;
+      } 
+/*
+    For HTML below:
+      &ensp; <!-- Two spaces gap -->
+      &emsp; <!-- Four spaces gap -->
+*/
+</style>
+</head>
+<body>
+    <span id="upper"></span>
+    <h2>Environments</h2>
+    <p>Click on an environment inside the tabbed menu to see available utilities:</p>
+
+    <div class="tab">
+        <button class="tablinks" onclick="openEnvironmentType(event, 'Part Evironment')">Part Evironment</button>
+        <button class="tablinks" onclick="openEnvironmentType(event, 'Assembly Evironment')">Assembly Evironment</button>
+        <button class="tablinks" onclick="openEnvironmentType(event, 'Drawing Evironment')">Drawing Evironment</button>
+    </div>
+
+    <div id="Part Evironment" class="tabcontent">
+        <h3>Part Evironment Features</h3>
+
+        <ul class="local-listings inline-block text-center w-full mb-6">
+            <li>
+                <a href="#p-item1">
+                    <span class="title">Set Body Material</span>
+                </a>
+            </li>
+            <li>
+                <a href="#p-item2">
+                    <span class="title">Get Part Mass</span>
+                </a>
+            </li>
+            <li>
+                <a href="#p-item3">
+                    <span class="title">Push Body Materials</span>
+                </a>
+            </li>
+        </ul>
+
+        <p></p>
+        <h4 id="p-item1">Set Body Material</h4>
+        <p>&emsp;- Tool Tip: "Can change multiple solidbodies to the same material at the same time.  Can also change all ModelStates within a part @ the same time."</p>
+        <p>&emsp;- More Details to come</p>
+
+        <p></p>
+        <h4 id="p-item2">Get Part Mass</h4>
+        <p>&emsp;- Tool Tip: "Updates a Custom iProperty with the Mass calculated from the BodyMaterials."</p>
+        <p>&emsp;- More Details to come</p>
+
+        <p></p>
+        <h4 id="p-item3">Push Body Materials</h4>
+        <p>&emsp;- Tool Tip: "Pushes the current Body Material overrides from the current ModelState to all others."</p>
+        <p>&emsp;- More Details to come</p>
+
+    </div>
+
+    <div id="Assembly Evironment" class="tabcontent">
+        <h3>Assembly Evironment Utilities</h3>
+
+        <ul class="local-listings inline-block text-center w-full mb-6">
+            <li>
+                <a href="#a-item1">
+                    <span class="title">Override Report</span>
+                </a>
+            </li>
+            <li>
+                <a href="#a-item2">
+                    <span class="title">Get Assembly Mass</span>
+                </a>
+            </li>
+            <li>
+                <a href="#a-item3">
+                    <span class="title">Set Body Material</span>
+                </a>
+            </li>
+        </ul>
+
+        <p></p>
+        <h4 id="a-item1">Override Report</h4>
+        <p>&emsp;- Tool Tip: "Reports all Body Material overrides present in the active assembly."</p>
+        <p>&emsp;- More Details to come</p>
+
+        <p></p>
+        <h4 id="a-item2">Get Assembly Mass</h4>
+        <p>&emsp;- Tool Tip: "Updates a Custom iProperty with the Mass calculated from the BodyMaterials in the active assembly."</p>
+        <p>&emsp;- More Details to come</p>
+
+        <p></p>
+        <h4 id="a-item3">Set Body Material</h4>
+        <p>&emsp;- Tool Tip: "NOT PROGRAMMED YET"</p>
+        <p>&emsp;- More Details to come</p>
+
+    </div>
+
+    <div id="Drawing Evironment" class="tabcontent">
+        <h3>Drawing Evironment Utilities</h3>
+
+        <ul class="local-listings inline-block text-center w-full mb-6">
+            <li>
+                <a href="#d-item1">
+                    <span class="title">Material Leaders</span>
+                </a>
+            </li>
+            <li>
+                <a href="#d-item2">
+                    <span class="title">Hatching</span>
+                </a>
+            </li>
+        </ul>
+
+        <p></p>
+        <h4 id="d-item1">Material Leaders</h4>
+        <p>&emsp;- Tool Tip: "Adds material leaders to a selected view."</p>
+        <p>&emsp;- More Details to come</p>
+
+        <p></p>
+        <h4 id="d-item2">Hatching</h4>
+        <p>&emsp;- Tool Tip: "Updates Hatch overrides based on Body Material for select View, entire sheet, or entire drawing."</p>
+        <p>&emsp;- More Details to come</p>
+
+    </div>
+
+    <a href="#upper">Back to top</a>
+
+    <div class="BottomWhiteSpace" style="position: absolute; width: 1px; height: 90%;"></div>
+
+    <script>
+        let darkMode = !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        console.log('dark mode ? :', darkMode);
+    </script>
+    <script>
+        function openEnvironmentType(evt, evironmentName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(evironmentName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+</body>
+</html> 
