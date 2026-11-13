@@ -1,271 +1,778 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-      /* Style the body, set up for darkmode/light mode read from browser */
-body {  
-  --txtColor : black;
-  --Bg_color : whitesmoke;
-  --BordersX : gray;
-
-  color            : var(--txtColor);
-  background-color : var(--Bg_color);
-  }
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MSPE Add-in Help</title>
+<style>
+:root {
+  --bg: #f5f5f5;
+  --surface: #ffffff;
+  --surface-2: #eef1f4;
+  --text: #1d1e22;
+  --muted: #5a6068;
+  --border: #c9ced4;
+  --accent: #1f5f99;
+  --accent-text: #ffffff;
+  --note-bg: #e8f1fa;
+  --note-border: #1f5f99;
+  --warn-bg: #fdf1e2;
+  --warn-border: #c26a00;
+  --code-bg: #e4e7eb;
+  --badge-part: #2e7d4f;
+  --badge-assembly: #7a4fa3;
+  --badge-drawing: #a3542e;
+}
 @media (prefers-color-scheme: dark) {
-  body {
-    --txtColor : whitesmoke;
-    --Bg_color : #1d1e22;
-    --BordersX : gray;
-    }
+  :root {
+    --bg: #1d1e22;
+    --surface: #26282d;
+    --surface-2: #2f3238;
+    --text: #e9eaec;
+    --muted: #a7adb5;
+    --border: #454a52;
+    --accent: #6fb0ec;
+    --accent-text: #10161d;
+    --note-bg: #1f2d3b;
+    --note-border: #6fb0ec;
+    --warn-bg: #3a2b19;
+    --warn-border: #e09a45;
+    --code-bg: #363a41;
+    --badge-part: #5cc08a;
+    --badge-assembly: #b99ae0;
+    --badge-drawing: #e39a75;
   }
-
-/* Style the tab */
-.tab {
-  overflow: hidden;
-  border: none;
-  color: var(--txtColor);
-  background-color: var(--Bg_color);
 }
-
-/* Style the buttons inside the tab */
-      .tab button {
-          color: inherit;
-          background-color: inherit;
-          float: left;
-          border: 1px solid var(--BordersX);
-          outline: none;
-          cursor: pointer;
-          width: 33.333%;
-          padding: 14px 16px;
-          transition: 0.3s;
-          font-size: 17px;
-          font-weight: bold;
-      }
-
-/* Change background color of buttons on hover */
-.tab button:hover {
-  background-color: var(--Bg_color);
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
 }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 0 16px 80px; }
+header { padding: 24px 0 8px; }
+header h1 { margin: 0; font-size: 28px; }
+header p { margin: 4px 0 0; color: var(--muted); }
 
-/* Create an active/current tablink class */
-.tab button.active {
-  background-color: var(--Bg_color);
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; border-bottom: 2px solid var(--border); }
+.tabs button {
+  font: inherit; font-weight: bold; font-size: 16px;
+  padding: 10px 18px; cursor: pointer;
+  color: var(--text); background: var(--surface-2);
+  border: 1px solid var(--border); border-bottom: none;
+  border-radius: 6px 6px 0 0;
 }
+.tabs button:hover { background: var(--surface); }
+.tabs button.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 
-/* Style the tab content */
-.tabcontent {
-  display: none;
-  padding: 6px 16px;
-  border: 1px solid var(--BordersX);
-  border-top: none;
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0; }
+.toolbar input {
+  flex: 1 1 240px; min-width: 0;
+  font: inherit; padding: 8px 10px;
+  color: var(--text); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 6px;
 }
+.toolbar .count { color: var(--muted); font-size: 14px; }
 
-      .local-listings {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(min-content, 200px));
-      }
+.panel h2 { margin: 28px 0 8px; font-size: 22px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+.panel h3 { margin: 20px 0 6px; font-size: 18px; }
 
-      /* Style the "un"sorted list [allows columns and rows] */
-      ul {
-          list-style-type: none;
-          counter-reset: section;
-          -moz-column-count: 3;
-          -moz-column-gap: 20px;
-          -webkit-column-count: 3;
-          -webkit-column-gap: 20px;
-          column-count: 3;
-          column-gap: 20px;
-      }
-      /* Style the list */
-          ul li {
-              padding-left: 30px;
-              position: relative;
-          }
-      /* Style the list item prefix [if any] */
-ul li:before {
-    margin: 0 0 0 -34px;
-    text-align: right;
-    width: 2em;
-    display: inline-block;
-    position: absolute;
-    height: 100%;
+.index { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
+.index h2 { margin: 0 0 6px; font-size: 16px; border: none; padding: 0; }
+.index ul { columns: 3 200px; column-gap: 24px; margin: 0; padding-left: 18px; }
+.index li { break-inside: avoid; }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin: 0 0 18px; scroll-margin-top: 12px;
 }
+.card h2 { margin: 0; font-size: 21px; border: none; padding: 0; }
+.card .summary { margin: 4px 0 6px; }
+.card .where { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+.card h3 { font-size: 16px; margin: 16px 0 4px; }
+.card h4 { font-size: 15px; margin: 12px 0 4px; color: var(--muted); }
+.badges { display: inline-flex; gap: 6px; margin-left: 8px; vertical-align: middle; }
+.badge { font-size: 12px; font-weight: bold; padding: 1px 8px; border-radius: 10px; border: 1px solid currentColor; }
+.badge.part { color: var(--badge-part); }
+.badge.assembly { color: var(--badge-assembly); }
+.badge.drawing { color: var(--badge-drawing); }
 
-      /* unvisited link */
-      a:link {
-          color: var(--txtColor);
-          text-decoration: none;
-          font-weight: bold;
-      }
+.callout { border-left: 4px solid; border-radius: 4px; padding: 8px 12px; margin: 12px 0; }
+.callout.note { background: var(--note-bg); border-color: var(--note-border); }
+.callout.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+.callout strong:first-child { display: block; }
 
-      /* visited link */
-      a:visited {
-          color: var(--txtColor);
-          text-decoration: none;
-          font-weight: bold;
-      }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 15px; }
+th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); }
+.table-scroll { overflow-x: auto; }
 
-      /* mouse over link */
-      a:hover {
-          color: var(--txtColor);
-          text-decoration: none;
-          font-weight: bold;
-      }
+code, kbd { font-family: Consolas, "Courier New", monospace; font-size: 14px; background: var(--code-bg); border-radius: 4px; padding: 0 4px; }
+kbd { border: 1px solid var(--border); border-bottom-width: 2px; }
+a { color: var(--accent); font-weight: bold; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ol, ul { padding-left: 24px; }
+li { margin: 2px 0; }
+.hidden { display: none !important; }
+.empty { color: var(--muted); font-style: italic; }
 
-      /* selected link */
-      a:active {
-          color: var(--txtColor);
-          text-decoration: none;
-          font-weight: bold;
-      } 
-/*
-    For HTML below:
-      &ensp; <!-- Two spaces gap -->
-      &emsp; <!-- Four spaces gap -->
-*/
+#toTop {
+  position: fixed; right: 16px; bottom: 16px;
+  font: inherit; font-weight: bold; padding: 8px 14px; cursor: pointer;
+  color: var(--accent-text); background: var(--accent);
+  border: none; border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+#toTop.show { opacity: 1; pointer-events: auto; }
+
+@media (max-width: 600px) {
+  header h1 { font-size: 23px; }
+  .tabs button { flex: 1 1 45%; padding: 8px 10px; }
+  .card { padding: 12px 14px; }
+}
 </style>
 </head>
 <body>
-    <span id="upper"></span>
-    <h2>Environments</h2>
-    <p>Click on an environment inside the tabbed menu to see available utilities:</p>
+<div class="wrap">
 
-    <div class="tab">
-        <button class="tablinks" onclick="openEnvironmentType(event, 'Part Evironment')">Part Evironment</button>
-        <button class="tablinks" onclick="openEnvironmentType(event, 'Assembly Evironment')">Assembly Evironment</button>
-        <button class="tablinks" onclick="openEnvironmentType(event, 'Drawing Evironment')">Drawing Evironment</button>
-    </div>
+<header>
+  <h1>MultiSolidPartEnhancements (MSPE)</h1>
+  <p>Add-in help &middot; Version 3.0.1.3 &middot; Body-level materials, mass, hatching, and material leaders for multi-body parts in Autodesk Inventor</p>
+</header>
 
-    <div id="Part Evironment" class="tabcontent">
-        <h3>Part Evironment Features</h3>
+<nav class="tabs" role="tablist">
+  <button data-tab="start" role="tab">Getting Started</button>
+  <button data-tab="part" role="tab">Part</button>
+  <button data-tab="assembly" role="tab">Assembly</button>
+  <button data-tab="drawing" role="tab">Drawing</button>
+</nav>
 
-        <ul class="local-listings inline-block text-center w-full mb-6">
-            <li>
-                <a href="#p-item1">
-                    <span class="title">Set Body Material</span>
-                </a>
-            </li>
-            <li>
-                <a href="#p-item2">
-                    <span class="title">Get Part Mass</span>
-                </a>
-            </li>
-            <li>
-                <a href="#p-item3">
-                    <span class="title">Push Body Materials</span>
-                </a>
-            </li>
+<!-- ============================ GETTING STARTED ============================ -->
+<section id="tab-start" class="panel">
+
+  <h2 id="gs-concepts">How body materials work</h2>
+  <p>Inventor assigns one material to an entire part. MSPE adds a material to each solid body, so one multi-body part can hold, for example, a plywood carcass, solid wood face frame, and MDF panels.</p>
+  <ul>
+    <li>Each solid body stores its material by name, separately for every model state</li>
+    <li>A body set to <strong>By Part</strong> follows the part material, which is the default for every body</li>
+    <li>The body's appearance changes to match its material, so overrides are visible in the model</li>
+    <li>Inventor's own part material, iProperties, and Physical mass still reflect the part material only</li>
+    <li>MSPE commands read the body materials for mass, reports, hatching, and leaders</li>
+  </ul>
+  <p>Body materials come from the material library set in the active project (<strong>Projects</strong> &rsaquo; <strong>Materials</strong>). A body material that is missing from that library is handled by the <a href="#gs-remap">session remap</a>.</p>
+  <div class="callout note"><strong>Note</strong>Parts in a library location (Content Center and project library folders) are read but never changed. Commands skip them without a message unless <a href="#gs-about">debug mode</a> is on.</div>
+
+  <h2 id="gs-locations">Where the commands are</h2>
+  <p>Every command sits on a ribbon panel named <strong>MSPE</strong>. Commands listed as a slide-out are under the arrow at the bottom of the panel.</p>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Environment</th><th>Ribbon tab</th><th>Command</th><th>Location</th></tr>
+    <tr><td>No document open</td><td>Tools</td><td><a href="#gs-about">About</a>, <a href="#gs-about">Addin Details</a></td><td>MSPE panel</td></tr>
+    <tr><td>Part, Assembly, Drawing</td><td>Add-Ins</td><td><a href="#gs-about">About</a>, <a href="#gs-about">Addin Details</a></td><td>MSPE panel</td></tr>
+    <tr><td rowspan="5">Part</td><td>&mdash;</td><td><a href="#cmd-set-body-material">Set Body Material</a></td><td>Right-click menu on selected solid bodies</td></tr>
+    <tr><td>3D Model</td><td><a href="#cmd-get-part-mass">Get Part Mass</a></td><td>MSPE panel</td></tr>
+    <tr><td>3D Model</td><td><a href="#cmd-push-body-materials">Push Body Materials</a></td><td>MSPE panel</td></tr>
+    <tr><td>3D Model</td><td><a href="#cmd-edit-material-remap">Edit Material Remap</a></td><td>MSPE panel</td></tr>
+    <tr><td>&mdash;</td><td><a href="#cmd-model-states">Model state copy</a></td><td>Automatic when a model state is created or copied</td></tr>
+    <tr><td rowspan="4">Assembly</td><td>Assemble</td><td><a href="#cmd-override-report">Override Report</a></td><td>MSPE panel</td></tr>
+    <tr><td>Assemble</td><td><a href="#cmd-get-assembly-mass">Get Assembly Mass</a></td><td>MSPE panel</td></tr>
+    <tr><td>Assemble</td><td><a href="#cmd-remap-missing-materials">Remap Missing Materials</a></td><td>MSPE panel</td></tr>
+    <tr><td>Assemble</td><td><a href="#cmd-edit-material-remap">Edit Material Remap</a></td><td>MSPE panel slide-out</td></tr>
+    <tr><td rowspan="4">Drawing</td><td>Annotate</td><td><a href="#cmd-create-material-leaders">Create Material Leaders</a></td><td>MSPE panel</td></tr>
+    <tr><td>Annotate</td><td><a href="#cmd-update-material-leaders">Update Material Leaders</a></td><td>MSPE panel</td></tr>
+    <tr><td>Annotate</td><td><a href="#cmd-hatching">Hatching</a></td><td>MSPE panel</td></tr>
+    <tr><td>Annotate</td><td><a href="#cmd-edit-material-remap">Edit Material Remap</a></td><td>MSPE panel slide-out</td></tr>
+  </table>
+  </div>
+
+  <h2 id="gs-workflows">Common workflows</h2>
+
+  <h3>Assign body materials and get a part mass</h3>
+  <ol>
+    <li>Open the part and activate the model state to edit</li>
+    <li>Select the bodies that share a material and run <a href="#cmd-set-body-material">Set Body Material</a>; repeat for each material</li>
+    <li>If other model states need the same materials, run <a href="#cmd-push-body-materials">Push Body Materials</a></li>
+    <li>Run <a href="#cmd-get-part-mass">Get Part Mass</a> to write the <code>BodyMaterialMass</code> iProperty</li>
+    <li>Save the part</li>
+  </ol>
+
+  <h3>Add a model state</h3>
+  <ol>
+    <li>Activate the model state whose body materials the new one should start with, or select it in the browser</li>
+    <li>Create or copy the model state with Inventor's own commands</li>
+    <li>MSPE copies the body materials into the new model state (see <a href="#cmd-model-states">Model state copy</a>)</li>
+  </ol>
+
+  <h3>Check an assembly</h3>
+  <ol>
+    <li>Run <a href="#cmd-override-report">Override Report</a> to see part materials and every body override</li>
+    <li>If materials are missing from the library, run <a href="#cmd-remap-missing-materials">Remap Missing Materials</a> and save the changed parts</li>
+    <li>Run <a href="#cmd-get-assembly-mass">Get Assembly Mass</a> for the total</li>
+  </ol>
+
+  <h3>Document a drawing</h3>
+  <ol>
+    <li>Confirm the drawing standard has a material hatch map (see <a href="#cmd-hatching">Hatching</a>)</li>
+    <li>Run <a href="#cmd-hatching">Hatching</a> on the sheet or the whole drawing</li>
+    <li>Run <a href="#cmd-create-material-leaders">Create Material Leaders</a> on section views or individual bodies</li>
+    <li>After model changes, run <a href="#cmd-update-material-leaders">Update Material Leaders</a> and <a href="#cmd-hatching">Hatching</a> again</li>
+  </ol>
+
+  <h3>Move parts to a new material library</h3>
+  <ol>
+    <li>Open the top-level assembly with the new library active in the project</li>
+    <li>Run <a href="#cmd-remap-missing-materials">Remap Missing Materials</a> and choose a replacement for each missing material</li>
+    <li>Review the pairs with <a href="#cmd-edit-material-remap">Edit Material Remap</a> and run the remap again if a pair changed</li>
+    <li>Save the changed parts before closing Inventor; the remap list is not saved</li>
+  </ol>
+
+  <h2 id="gs-prompts">Prompts, picking, and undo</h2>
+  <ul>
+    <li><strong>List prompts:</strong> select an item and click <strong>OK</strong>; <strong>Cancel</strong> ends the command unless the command card states otherwise</li>
+    <li><strong>Yes/No prompts:</strong> answer as described on each command card</li>
+    <li><strong>Pick loops:</strong> commands that ask you to <em>Select a DrawingView</em> or <em>Select a Body</em> keep asking after each pick; press <kbd>Esc</kbd> to finish</li>
+    <li><strong>Status bar:</strong> long commands show the body, view, or sheet being processed in Inventor's status bar</li>
+    <li><strong>Undo:</strong> each command is one entry in Inventor's undo list; pick loops add one entry per pick</li>
+  </ul>
+
+  <h2 id="gs-remap">Missing materials and the session remap</h2>
+  <p>When a part or body material is missing from the active material library, MSPE asks for a replacement:</p>
+  <ul>
+    <li>The prompt reads <em>Select A Material to replace material: "[missing name]"</em> and lists every library material</li>
+    <li>Your choice is saved in a remap list for the rest of the Inventor session and reused without asking again</li>
+    <li>Clicking <strong>Cancel</strong> declines that material; the command falls back to the part material for those bodies, and other commands do not ask again this session</li>
+    <li>Any command that reads body materials can show this prompt, including mass, reports, hatching, and leaders</li>
+    <li><a href="#cmd-remap-missing-materials">Remap Missing Materials</a> writes the replacements into the parts; the other commands only use them for their own result</li>
+    <li><a href="#cmd-edit-material-remap">Edit Material Remap</a> changes or deletes pairs and clears the declined list</li>
+  </ul>
+  <div class="callout warn"><strong>Watch out</strong>The remap list lives only in memory. Closing Inventor clears it, along with the declined list.</div>
+
+  <h2 id="gs-errors">Errors and logs</h2>
+  <ul>
+    <li>If a command fails, a message shows the error details, then a second message reads <em>Reverting to last Status</em> or <em>Aborting</em>; the command's changes are rolled back</li>
+    <li>Each Inventor session writes a log to <code>%TEMP%\MultiSolidBodyPartEnhancements_Logs\</code>, named by the session start date and time</li>
+    <li>Send the error message (a screenshot works) and the log file to the add-in developer when reporting a problem</li>
+  </ul>
+
+  <h2 id="gs-about">About, Addin Details, and debug mode</h2>
+  <h3>About</h3>
+  <ol>
+    <li>Click <strong>About</strong> on the MSPE panel</li>
+    <li>The message shows the add-in version and Inventor version</li>
+    <li>Click <strong>Yes</strong> to turn debug mode on; <strong>No</strong> or <strong>Cancel</strong> turns it off</li>
+  </ol>
+  <p>Debug mode adds detail to the session log and shows a message when a part is skipped because of its library location. It stays on until you turn it off or close Inventor.</p>
+  <div class="callout warn"><strong>Watch out</strong><a href="#cmd-create-material-leaders">Create Material Leaders</a> also sets debug mode: holding <kbd>Shift</kbd> when you click it turns debug mode on, and clicking it without <kbd>Shift</kbd> turns debug mode off.</div>
+  <h3>Addin Details</h3>
+  <p>Opens this page in your web browser. When the online copy is unreachable, the copy installed with the add-in opens instead, which may be older.</p>
+
+  <h2 id="gs-api">For add-in developers</h2>
+  <p>Other add-ins and iLogic rules can read body materials through the add-in's automation object (<code>ApplicationAddIn.Automation</code>). It exposes <code>MSPEgetBodyMaterial(SurfaceBody) As MaterialAsset</code>, which returns the body material for the active model state, or the part material for a By Part body.</p>
+
+  <h2>Version notes</h2>
+  <ul>
+    <li>Version 3.0 and later run on .NET 10, which Inventor 2025.5, 2026.4, and later releases use</li>
+    <li>Body materials saved by versions before 2.0 are no longer converted; re-assign those bodies</li>
+  </ul>
+</section>
+
+<!-- ============================ COMMAND TABS ============================ -->
+<section id="tab-commands" class="panel hidden">
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search commands on this tab" aria-label="Search commands">
+    <span id="count" class="count"></span>
+  </div>
+  <nav class="index" aria-label="Command index"><h2>Commands</h2><ul id="index-list"></ul></nav>
+  <p id="no-results" class="empty hidden">No commands match your search.</p>
+
+  <!-- ---------- Set Body Material ---------- -->
+  <article class="card" id="cmd-set-body-material" data-env="part">
+    <h2>Set Body Material</h2>
+    <p class="summary">Assigns one material to one or more solid bodies, in the active model state or in all model states.</p>
+    <p class="where">Part &rsaquo; right-click menu on selected solid bodies</p>
+
+    <h3>Before you start</h3>
+    <ul>
+      <li>The part is in an editable location, not a library or Content Center folder</li>
+      <li>The material exists in the project's active material library</li>
+      <li>The model state to change is active</li>
+    </ul>
+
+    <h3>How to run it</h3>
+    <ol>
+      <li>Select one or more solid bodies in the browser's <strong>Solid Bodies</strong> folder or in the graphics window</li>
+      <li>Right-click and choose <strong>Set Body Material</strong></li>
+      <li>If the part has more than one model state, answer <em>Would you like to set the material for all ModelStates in each of the selected solid bodies?</em>
+        <ul>
+          <li><strong>Yes</strong> applies the material to every model state</li>
+          <li><strong>No</strong> applies it to the active model state only</li>
         </ul>
+      </li>
+      <li>In <em>Select A Material For the selected Body</em>, pick a material and click <strong>OK</strong>; pick <strong>By Part</strong> to remove the override</li>
+    </ol>
 
-        <p></p>
-        <h4 id="p-item1">Set Body Material</h4>
-        <p>&emsp;- Tool Tip: "Can change multiple solidbodies to the same material at the same time.  Can also change all ModelStates within a part @ the same time."</p>
-        <p>&emsp;- More Details to come</p>
+    <h3>Results</h3>
+    <ul>
+      <li>Every selected body receives the same material</li>
+      <li>Body appearance changes to the material's appearance; By Part returns the body to the part appearance</li>
+      <li>Inventor's part material and mass do not change; run <a href="#cmd-get-part-mass">Get Part Mass</a> for the body-based mass</li>
+      <li>One undo step covers all selected bodies</li>
+    </ul>
 
-        <p></p>
-        <h4 id="p-item2">Get Part Mass</h4>
-        <p>&emsp;- Tool Tip: "Updates a Custom iProperty with the Mass calculated from the BodyMaterials."</p>
-        <p>&emsp;- More Details to come</p>
+    <div class="callout warn"><strong>Watch out</strong>Clicking <strong>Cancel</strong> in the material list sets the selected bodies to By Part, which removes their existing overrides. Use Undo to restore them.</div>
+    <div class="callout note"><strong>Note</strong>The menu item appears only when every selected item is a solid body. Remove surface bodies, faces, and features from the selection if it is missing.</div>
+    <div class="callout note"><strong>Note</strong>In an assembly, a <strong>Set Body Material</strong> item also appears on selected bodies but only shows <em>Not Programmed yet</em>. Open the part to set body materials.</div>
+  </article>
 
-        <p></p>
-        <h4 id="p-item3">Push Body Materials</h4>
-        <p>&emsp;- Tool Tip: "Pushes the current Body Material overrides from the current ModelState to all others."</p>
-        <p>&emsp;- More Details to come</p>
+  <!-- ---------- Push Body Materials ---------- -->
+  <article class="card" id="cmd-push-body-materials" data-env="part">
+    <h2>Push Body Materials</h2>
+    <p class="summary">Copies every body material in the active model state to all other model states in the part.</p>
+    <p class="where">Part &rsaquo; 3D Model tab &rsaquo; MSPE panel</p>
 
-    </div>
+    <h3>Before you start</h3>
+    <ul>
+      <li>The part has more than one model state</li>
+      <li>The model state with the correct body materials is active</li>
+    </ul>
 
-    <div id="Assembly Evironment" class="tabcontent">
-        <h3>Assembly Evironment Utilities</h3>
+    <h3>How to run it</h3>
+    <ol>
+      <li>Activate the source model state</li>
+      <li>Click <strong>Push Body Materials</strong></li>
+      <li>Read the confirmation, which names the part and the source model state, and click <strong>Yes</strong> to continue or <strong>No</strong> to stop</li>
+    </ol>
 
-        <ul class="local-listings inline-block text-center w-full mb-6">
-            <li>
-                <a href="#a-item1">
-                    <span class="title">Override Report</span>
-                </a>
-            </li>
-            <li>
-                <a href="#a-item2">
-                    <span class="title">Get Assembly Mass</span>
-                </a>
-            </li>
-            <li>
-                <a href="#a-item3">
-                    <span class="title">Set Body Material</span>
-                </a>
-            </li>
+    <h3>Results</h3>
+    <ul>
+      <li>Every solid body gets its current material in every model state, including bodies set to By Part</li>
+      <li>One undo step: <em>Push BodyMaterial Overrides</em></li>
+    </ul>
+
+    <div class="callout warn"><strong>Watch out</strong>Overrides that differ between model states are replaced. A body that is By Part in the active model state becomes By Part in all of them.</div>
+  </article>
+
+  <!-- ---------- Get Part Mass ---------- -->
+  <article class="card" id="cmd-get-part-mass" data-env="part">
+    <h2>Get Part Mass</h2>
+    <p class="summary">Calculates the part mass from each body's material and stores it in a custom iProperty.</p>
+    <p class="where">Part &rsaquo; 3D Model tab &rsaquo; MSPE panel</p>
+
+    <h3>Before you start</h3>
+    <ul>
+      <li>Body materials are assigned with <a href="#cmd-set-body-material">Set Body Material</a></li>
+      <li>Every material used has a density in its physical properties</li>
+    </ul>
+
+    <h3>How to run it</h3>
+    <ol>
+      <li>Click <strong>Get Part Mass</strong></li>
+      <li>A message titled <em>[part name] Mass:</em> shows the total, followed by an <em>Overridden Bodies:</em> list of each body and its material</li>
+      <li>Click <strong>OK</strong></li>
+    </ol>
+
+    <h3>Results</h3>
+    <ul>
+      <li>Custom iProperty <code>BodyMaterialMass</code> is created or updated as text, for example <code>48.27 lbmass</code></li>
+      <li>The value uses the part's mass units from Document Settings, rounded to two decimals</li>
+      <li>Mass is each solid body's volume times its material density; surface bodies are excluded</li>
+      <li>Any mass override entered in iProperties &rsaquo; Physical is cleared</li>
+      <li>One undo step: <em>Mass Update From BodyMaterial</em></li>
+    </ul>
+
+    <div class="callout note"><strong>Note</strong>The iProperty does not update on its own. Run the command again after changing geometry or body materials, and before the part is used in a title block or BOM.</div>
+    <div class="callout warn"><strong>Watch out</strong>A material without density shows <em>[material] does not have Density.</em> and contributes zero mass. Correct the material in the library and run the command again.</div>
+  </article>
+
+  <!-- ---------- Model state copy ---------- -->
+  <article class="card" id="cmd-model-states" data-env="part">
+    <h2>Model State Copy (automatic)</h2>
+    <p class="summary">Carries body materials into new and copied model states, and keeps them when model states are renamed.</p>
+    <p class="where">Part &rsaquo; runs automatically; no button</p>
+
+    <h3>How it works</h3>
+    <ol>
+      <li>Activate the model state to copy from, or select it in the browser</li>
+      <li>Create a new model state or use Inventor's <strong>Copy</strong> command on a model state</li>
+      <li>The new model state starts with the same body materials as the source</li>
+    </ol>
+
+    <h3>Results</h3>
+    <ul>
+      <li>Each model state receives a hidden unique ID, so renaming a model state keeps its body materials</li>
+      <li>The copy merges with Inventor's create step in the undo list</li>
+    </ul>
+
+    <div class="callout warn"><strong>Watch out</strong>Model states added through <strong>Edit via Spreadsheet</strong> do not receive copied body materials. Assign them with <a href="#cmd-set-body-material">Set Body Material</a> or <a href="#cmd-push-body-materials">Push Body Materials</a>.</div>
+  </article>
+
+  <!-- ---------- Override Report ---------- -->
+  <article class="card" id="cmd-override-report" data-env="assembly">
+    <h2>Override Report</h2>
+    <p class="summary">Lists the part materials used in the assembly and every body material override, in Notepad.</p>
+    <p class="where">Assembly &rsaquo; Assemble tab &rsaquo; MSPE panel</p>
+
+    <h3>How to run it</h3>
+    <ol>
+      <li>Open the assembly and click <strong>Override Report</strong></li>
+      <li>Answer any <a href="#gs-remap">missing material</a> prompts</li>
+      <li>Notepad opens with the report</li>
+    </ol>
+
+    <h3>Results</h3>
+    <ul>
+      <li><em>Inventor Materials used in this model:</em> each part material in use</li>
+      <li><em>BodyMaterial Overrides:</em> each part with overrides, followed by its bodies as <code>Body name - Material</code></li>
+      <li>Includes parts at every subassembly level that have at least one unsuppressed occurrence</li>
+      <li>Lists only solid bodies with volume; By Part bodies are omitted</li>
+      <li>Materials in the model are not changed</li>
+    </ul>
+
+    <div class="callout note"><strong>Note</strong>The report is a temporary text file. Use <strong>File</strong> &rsaquo; <strong>Save As</strong> in Notepad to keep it. If Notepad does not open, the same information appears in two message boxes.</div>
+  </article>
+
+  <!-- ---------- Get Assembly Mass ---------- -->
+  <article class="card" id="cmd-get-assembly-mass" data-env="assembly">
+    <h2>Get Assembly Mass</h2>
+    <p class="summary">Totals the body-material mass of every unsuppressed part occurrence in the assembly.</p>
+    <p class="where">Assembly &rsaquo; Assemble tab &rsaquo; MSPE panel</p>
+
+    <h3>How to run it</h3>
+    <ol>
+      <li>Click <strong>Get Assembly Mass</strong></li>
+      <li>Answer any <a href="#gs-remap">missing material</a> prompts</li>
+      <li>A message shows <em>Total unsuppressed mass:</em> with the value and units</li>
+    </ol>
+
+    <h3>Results</h3>
+    <ul>
+      <li>Each part's body-material mass is multiplied by its number of unsuppressed occurrences, at every subassembly level</li>
+      <li>The total uses the assembly's mass units, rounded to two decimals</li>
+      <li>No iProperty is written; part <code>BodyMaterialMass</code> values are not updated</li>
+    </ul>
+
+    <div class="callout warn"><strong>Watch out</strong>Occurrences set to Reference or Phantom BOM structure are counted. Suppress them first if they should be excluded.</div>
+  </article>
+
+  <!-- ---------- Remap Missing Materials ---------- -->
+  <article class="card" id="cmd-remap-missing-materials" data-env="assembly">
+    <h2>Remap Missing Materials</h2>
+    <p class="summary">Finds part and body materials that are missing from the active library and replaces them in the parts.</p>
+    <p class="where">Assembly &rsaquo; Assemble tab &rsaquo; MSPE panel</p>
+
+    <h3>Before you start</h3>
+    <ul>
+      <li>The project's active material library is the one the parts should use</li>
+      <li>The parts are in editable locations and checked out if you use Vault</li>
+    </ul>
+
+    <h3>How to run it</h3>
+    <ol>
+      <li>Open the top-level assembly and click <strong>Remap Missing Materials</strong></li>
+      <li>For each missing material, answer <em>Select A Material to replace material: "[missing name]"</em>
+        <ul>
+          <li>Pick a replacement and click <strong>OK</strong> to use it everywhere that material appears</li>
+          <li>Click <strong>Cancel</strong> to skip that material for this run</li>
         </ul>
+      </li>
+      <li>Save the changed parts</li>
+    </ol>
 
-        <p></p>
-        <h4 id="a-item1">Override Report</h4>
-        <p>&emsp;- Tool Tip: "Reports all Body Material overrides present in the active assembly."</p>
-        <p>&emsp;- More Details to come</p>
+    <h3>Options</h3>
+    <ul>
+      <li>Hold <kbd>Shift</kbd> while clicking the button to clear the session remap and declined lists first, so every missing material prompts again</li>
+    </ul>
 
-        <p></p>
-        <h4 id="a-item2">Get Assembly Mass</h4>
-        <p>&emsp;- Tool Tip: "Updates a Custom iProperty with the Mass calculated from the BodyMaterials in the active assembly."</p>
-        <p>&emsp;- More Details to come</p>
+    <h3>Results</h3>
+    <ul>
+      <li>Part materials that are missing are replaced with the chosen library material; an old local copy with a conflicting definition is renamed with <code>_was_replaced</code></li>
+      <li>Body overrides that are missing are replaced in the active model state of each part</li>
+      <li>Materials already in the session remap are applied without prompting</li>
+      <li>Materials declined earlier in the session are asked again once per run</li>
+      <li>One undo step: <em>Remapped Missing Materials</em>; nothing is added to the undo list if no material changed</li>
+      <li>Parts in library locations and parts with only suppressed occurrences are skipped</li>
+    </ul>
 
-        <p></p>
-        <h4 id="a-item3">Set Body Material</h4>
-        <p>&emsp;- Tool Tip: "NOT PROGRAMMED YET"</p>
-        <p>&emsp;- More Details to come</p>
+    <div class="callout note"><strong>Note</strong>Review or change the pairs afterward with <a href="#cmd-edit-material-remap">Edit Material Remap</a>.</div>
+  </article>
 
-    </div>
+  <!-- ---------- Hatching ---------- -->
+  <article class="card" id="cmd-hatching" data-env="drawing">
+    <h2>Hatching</h2>
+    <p class="summary">Sets each body's hatch pattern in section views from its body material, using the drawing standard's material hatch map.</p>
+    <p class="where">Drawing &rsaquo; Annotate tab &rsaquo; MSPE panel</p>
 
-    <div id="Drawing Evironment" class="tabcontent">
-        <h3>Drawing Evironment Utilities</h3>
+    <h3>Before you start</h3>
+    <ul>
+      <li>The active drawing standard has material-to-pattern pairs on the <strong>Material Hatch Pattern Defaults</strong> tab of the Style and Standard Editor</li>
+      <li>That standard is saved to the style library, since MSPE reads <code>standard.xml</code> in the project's Design Data folder</li>
+      <li>Hatch map names match the material names in the library exactly</li>
+      <li>Views to update have hatching turned on</li>
+    </ul>
 
-        <ul class="local-listings inline-block text-center w-full mb-6">
-            <li>
-                <a href="#d-item1">
-                    <span class="title">Material Leaders</span>
-                </a>
-            </li>
-            <li>
-                <a href="#d-item2">
-                    <span class="title">Hatching</span>
-                </a>
-            </li>
+    <h3>How to run it</h3>
+    <ol>
+      <li>Click <strong>Hatching</strong></li>
+      <li>If prompted that the drawing standard <em>is Not up to date</em>, click <strong>Yes</strong> to update it from the library; <strong>No</strong> ends the command</li>
+      <li>In <em>For how many views would you like to update hatching?</em>, choose one option:
+        <ul>
+          <li><strong>Single View</strong>: pick views at <em>Select a DrawingView</em>, then press <kbd>Esc</kbd></li>
+          <li><strong>Entire Sheet</strong> (default): every view on the active sheet</li>
+          <li><strong>Entire Drawing</strong>: every view on every sheet, after updating the drawing if needed</li>
         </ul>
+      </li>
+      <li>Review any messages at the end</li>
+    </ol>
 
-        <p></p>
-        <h4 id="d-item1">Material Leaders</h4>
-        <p>&emsp;- Tool Tip: "Adds material leaders to a selected view."</p>
-        <p>&emsp;- More Details to come</p>
+    <h3>Results</h3>
+    <ul>
+      <li>Regions whose pattern does not match the map are changed</li>
+      <li>Override bodies get the mapped pattern at 45&deg; with <strong>By Material</strong> turned off</li>
+      <li>By Part bodies get the mapped pattern with <strong>By Material</strong> turned on</li>
+      <li>Suppressed views and views with hatching off are skipped</li>
+      <li><em>The following Materials are not mapped to Hatch patterns in the Active Drawing Standard</em> lists materials to add to the hatch map</li>
+      <li><em>Bad Material Overrides</em> lists bodies whose override could not be resolved, as <em>Override on Solid: [body] in Part: [part]</em></li>
+      <li>Undo: one step per picked view, or one step per sheet</li>
+    </ul>
 
-        <p></p>
-        <h4 id="d-item2">Hatching</h4>
-        <p>&emsp;- Tool Tip: "Updates Hatch overrides based on Body Material for select View, entire sheet, or entire drawing."</p>
-        <p>&emsp;- More Details to come</p>
+    <div class="callout warn"><strong>Watch out</strong>MSPE reads the hatch map once per Inventor session, from the standard of the first drawing that runs a drawing command. A drawing that uses a different standard ends Hatching without a message, and the leader commands report that the drawing style is not up to date. Restart Inventor to work in that drawing.</div>
+    <div class="callout warn"><strong>Watch out</strong>In <strong>Single View</strong>, picking a view with hatching turned off ends the pick loop.</div>
+    <div class="callout note"><strong>Note</strong>Map errors read <em>Could not build Hatch-Material Map [Style Name Not Found]</em> or <em>[HatchMap Is Empty]</em>. Check that the standard is saved to the style library with a hatch map.</div>
+  </article>
 
-    </div>
+  <!-- ---------- Create Material Leaders ---------- -->
+  <article class="card" id="cmd-create-material-leaders" data-env="drawing">
+    <h2>Create Material Leaders</h2>
+    <p class="summary">Adds a leader naming each body's material, for a single picked body or every hatched body in a view.</p>
+    <p class="where">Drawing &rsaquo; Annotate tab &rsaquo; MSPE panel</p>
 
-    <a href="#upper">Back to top</a>
+    <h3>Before you start</h3>
+    <ul>
+      <li>For <strong>Entire View</strong>, the view is a section view with hatching turned on</li>
+      <li>For hatch updates at the same time, the drawing standard meets the <a href="#cmd-hatching">Hatching</a> requirements; leaders still work without them</li>
+    </ul>
 
-    <div class="BottomWhiteSpace" style="position: absolute; width: 1px; height: 90%;"></div>
+    <h3>How to run it</h3>
+    <ol>
+      <li>Click <strong>Create Material Leaders</strong></li>
+      <li>Close any hatch map or drawing style message; the command continues without hatching</li>
+      <li>In <em>For how would you like to create material leaders?</em>, choose one option:
+        <ul>
+          <li><strong>Single Body</strong> (default): at <em>Select a Body</em>, click an edge of the body; the leader attaches to the midpoint of that edge</li>
+          <li><strong>Entire View</strong>: at <em>Select a DrawingView</em>, click a view; each hatched body gets a leader on its longest visible edge</li>
+        </ul>
+      </li>
+      <li>Keep picking, then press <kbd>Esc</kbd> to finish</li>
+      <li>Drag leader text to its final position</li>
+    </ol>
 
-    <script>
-        let darkMode = !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        console.log('dark mode ? :', darkMode);
-    </script>
-    <script>
-        function openEnvironmentType(evt, evironmentName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(evironmentName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-    </script>
+    <h3>Options</h3>
+    <ul>
+      <li>Hold <kbd>Shift</kbd> while clicking the button to run in <a href="#gs-about">debug mode</a>; picks are then not grouped into undo steps or rolled back on error</li>
+    </ul>
 
+    <h3>Results</h3>
+    <ul>
+      <li>By Part bodies get a bold leader linked to the part's Material iProperty, which updates on its own</li>
+      <li>Override bodies get the material name as plain text; use <a href="#cmd-update-material-leaders">Update Material Leaders</a> after changes</li>
+      <li>Leaders are placed up and to the left of the attach point</li>
+      <li>A body that already has an MSPE leader on one of its edges gets its text updated instead of a second leader</li>
+      <li>The picked body's hatch is also updated, when the hatch map is available</li>
+      <li>One undo step per pick</li>
+    </ul>
+
+    <div class="callout note"><strong>Note</strong>Leaders are tagged so the update command can find them. Leaders you draw by hand are never changed by MSPE.</div>
+  </article>
+
+  <!-- ---------- Update Material Leaders ---------- -->
+  <article class="card" id="cmd-update-material-leaders" data-env="drawing">
+    <h2>Update Material Leaders</h2>
+    <p class="summary">Refreshes the text of leaders made by Create Material Leaders after body materials change.</p>
+    <p class="where">Drawing &rsaquo; Annotate tab &rsaquo; MSPE panel</p>
+
+    <h3>How to run it</h3>
+    <ol>
+      <li>Click <strong>Update Material Leaders</strong></li>
+      <li>Close any hatch map or drawing style message; leader updates continue</li>
+      <li>In <em>For how many views would you like to update material leaders?</em>, choose one option:
+        <ul>
+          <li><strong>Single View</strong>: pick views at <em>Select a DrawingView</em>, then press <kbd>Esc</kbd></li>
+          <li><strong>Entire Sheet</strong> (default): the active sheet</li>
+          <li><strong>Entire Drawing</strong>: every sheet, after updating the drawing if needed</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>Results</h3>
+    <ul>
+      <li>Each MSPE leader attached to a model edge is matched to the body it touches, and its text is updated to that body's material</li>
+      <li>A leader moved to a different body takes on that body's material</li>
+      <li>Leaders not attached to an edge, and leaders drawn by hand, are skipped</li>
+      <li>No new leaders are added and hatching is not changed</li>
+    </ul>
+
+    <div class="callout note"><strong>Note</strong><strong>Single View</strong> updates every MSPE leader on the sheet that holds the picked view.</div>
+  </article>
+
+  <!-- ---------- Edit Material Remap ---------- -->
+  <article class="card" id="cmd-edit-material-remap" data-env="part assembly drawing">
+    <h2>Edit Material Remap</h2>
+    <p class="summary">Shows the session's missing-material remap pairs so you can change or delete them, and clears declined materials.</p>
+    <p class="where">Part &rsaquo; 3D Model tab &rsaquo; MSPE panel &middot; Assembly &rsaquo; Assemble tab &rsaquo; MSPE slide-out &middot; Drawing &rsaquo; Annotate tab &rsaquo; MSPE slide-out</p>
+
+    <h3>Before you start</h3>
+    <ul>
+      <li>At least one material has been remapped or declined this session (see <a href="#gs-remap">session remap</a>); otherwise the command shows <em>No materials have been remapped or declined in this session.</em></li>
+    </ul>
+
+    <h3>How to run it</h3>
+    <ol>
+      <li>Click <strong>Edit Material Remap</strong></li>
+      <li>The window lists each pair: <strong>Missing Material</strong> and <strong>Remapped To</strong></li>
+      <li>To change a pair, click its <strong>Remapped To</strong> cell and pick a library material from the drop-down</li>
+      <li>To delete pairs, select the rows and click <strong>Delete Selected</strong> or press <kbd>Delete</kbd></li>
+      <li>To be asked again about materials you declined, click <strong>Clear Declined (n)</strong>; hover over it to see the declined names</li>
+      <li>Click <strong>OK</strong> to save the list, or <strong>Cancel</strong> to discard the edits</li>
+    </ol>
+
+    <h3>Results</h3>
+    <ul>
+      <li>Later commands use the edited pairs</li>
+      <li>Deleted pairs prompt again the next time that material is found</li>
+      <li>Parts already changed by <a href="#cmd-remap-missing-materials">Remap Missing Materials</a> keep their new materials; run it again only for materials that are still missing</li>
+    </ul>
+
+    <div class="callout note"><strong>Note</strong>A pair whose replacement is no longer in the active library appears with a blank <strong>Remapped To</strong> cell. <strong>OK</strong> reports any blank rows; pick a material or delete the row.</div>
+    <div class="callout warn"><strong>Watch out</strong><strong>Clear Declined</strong> takes effect immediately, even if you then click <strong>Cancel</strong>.</div>
+  </article>
+
+</section>
+
+</div>
+
+<button id="toTop" type="button" aria-label="Back to top">&uarr; Top</button>
+
+<script>
+(function () {
+  var ENV_LABEL = { part: 'Part', assembly: 'Assembly', drawing: 'Drawing' };
+  var tabs = document.querySelectorAll('.tabs button');
+  var startPanel = document.getElementById('tab-start');
+  var cmdPanel = document.getElementById('tab-commands');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var search = document.getElementById('search');
+  var count = document.getElementById('count');
+  var indexList = document.getElementById('index-list');
+  var noResults = document.getElementById('no-results');
+  var current = 'start';
+
+  function envsOf(card) { return (card.getAttribute('data-env') || '').split(/\s+/).filter(Boolean); }
+
+  // Environment badges
+  cards.forEach(function (card) {
+    var span = document.createElement('span');
+    span.className = 'badges';
+    envsOf(card).forEach(function (env) {
+      var b = document.createElement('span');
+      b.className = 'badge ' + env;
+      b.textContent = ENV_LABEL[env] || env;
+      span.appendChild(b);
+    });
+    card.querySelector('h2').appendChild(span);
+  });
+
+  function remember(tab) { try { sessionStorage.setItem('mspeTab', tab); } catch (e) {} }
+  function recall() { try { return sessionStorage.getItem('mspeTab'); } catch (e) { return null; } }
+
+  function applyFilter() {
+    var q = (search.value || '').trim().toLowerCase();
+    var shown = 0, total = 0;
+    indexList.innerHTML = '';
+    cards.forEach(function (card) {
+      var inEnv = envsOf(card).indexOf(current) !== -1;
+      var match = inEnv && (!q || card.textContent.toLowerCase().indexOf(q) !== -1);
+      if (inEnv) total++;
+      card.classList.toggle('hidden', !match);
+      if (match) {
+        shown++;
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = '#' + card.id;
+        a.textContent = card.querySelector('h2').firstChild.textContent.trim();
+        li.appendChild(a);
+        indexList.appendChild(li);
+      }
+    });
+    count.textContent = q ? shown + ' of ' + total + ' commands' : total + ' commands';
+    noResults.classList.toggle('hidden', shown > 0);
+  }
+
+  function showTab(tab) {
+    if (['start', 'part', 'assembly', 'drawing'].indexOf(tab) === -1) tab = 'start';
+    current = tab;
+    for (var i = 0; i < tabs.length; i++) {
+      var on = tabs[i].getAttribute('data-tab') === tab;
+      tabs[i].classList.toggle('active', on);
+      tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+    startPanel.classList.toggle('hidden', tab !== 'start');
+    cmdPanel.classList.toggle('hidden', tab === 'start');
+    if (tab !== 'start') applyFilter();
+    remember(tab);
+  }
+
+  function goToHash(smooth) {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return false;
+    var el = document.getElementById(id);
+    if (!el) return false;
+    if (startPanel.contains(el)) {
+      showTab('start');
+    } else {
+      var card = el.closest('.card');
+      if (card) {
+        var envs = envsOf(card);
+        if (envs.indexOf(current) === -1) showTab(envs[0]);
+        if (card.classList.contains('hidden')) { search.value = ''; applyFilter(); }
+      }
+    }
+    el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    return true;
+  }
+
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].addEventListener('click', function () {
+      showTab(this.getAttribute('data-tab'));
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+      window.scrollTo(0, 0);
+    });
+  }
+  search.addEventListener('input', applyFilter);
+  window.addEventListener('hashchange', function () { goToHash(true); });
+  // Same-hash clicks do not fire hashchange, so handle internal links directly
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var target = a.getAttribute('href');
+    if (target === location.hash) { e.preventDefault(); goToHash(true); }
+  });
+
+  var toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('show', window.scrollY > 300);
+  });
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  });
+
+  showTab(recall() || 'start');
+  goToHash(false);
+})();
+</script>
 </body>
-</html> 
+</html>
