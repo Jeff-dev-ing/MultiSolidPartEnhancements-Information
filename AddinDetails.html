@@ -267,7 +267,6 @@ li { margin: 2px 0; }
     <li>Click <strong>Yes</strong> to turn debug mode on; <strong>No</strong> or <strong>Cancel</strong> turns it off</li>
   </ol>
   <p>Debug mode adds detail to the session log and shows a message when a part is skipped because of its library location. It stays on until you turn it off or close Inventor.</p>
-  <div class="callout warn"><strong>Watch out</strong><a href="#cmd-create-material-leaders">Create Material Leaders</a> also sets debug mode: holding <kbd>Shift</kbd> when you click it turns debug mode on, and clicking it without <kbd>Shift</kbd> turns debug mode off.</div>
   <h3>Addin Details</h3>
   <p>Opens this page in your web browser. When the online copy is unreachable, the copy installed with the add-in opens instead, which may be older.</p>
 
@@ -307,13 +306,13 @@ li { margin: 2px 0; }
     <ol>
       <li>Select one or more solid bodies in the browser's <strong>Solid Bodies</strong> folder or in the graphics window</li>
       <li>Right-click and choose <strong>Set Body Material</strong></li>
+      <li>In <em>Select A Material For the selected Body</em>, pick a material and click <strong>OK</strong>; pick <strong>By Part</strong> to remove the override, or click <strong>Cancel</strong> to stop with no changes</li>
       <li>If the part has more than one model state, answer <em>Would you like to set the material for all ModelStates in each of the selected solid bodies?</em>
         <ul>
           <li><strong>Yes</strong> applies the material to every model state</li>
           <li><strong>No</strong> applies it to the active model state only</li>
         </ul>
       </li>
-      <li>In <em>Select A Material For the selected Body</em>, pick a material and click <strong>OK</strong>; pick <strong>By Part</strong> to remove the override</li>
     </ol>
 
     <h3>Results</h3>
@@ -324,9 +323,9 @@ li { margin: 2px 0; }
       <li>One undo step covers all selected bodies</li>
     </ul>
 
-    <div class="callout warn"><strong>Watch out</strong>Clicking <strong>Cancel</strong> in the material list sets the selected bodies to By Part, which removes their existing overrides. Use Undo to restore them.</div>
     <div class="callout note"><strong>Note</strong>The menu item appears only when every selected item is a solid body. Remove surface bodies, faces, and features from the selection if it is missing.</div>
-    <div class="callout note"><strong>Note</strong>In an assembly, a <strong>Set Body Material</strong> item also appears on selected bodies but only shows <em>Not Programmed yet</em>. Open the part to set body materials.</div>
+    <div class="callout note"><strong>Note</strong>A part in a library location shows <em>[part] is in a library location and cannot be modified.</em> and no material list.</div>
+    <div class="callout note"><strong>Note</strong>Set Body Material runs in parts only. To set body materials for an assembly, open the part.</div>
   </article>
 
   <!-- ---------- Push Body Materials ---------- -->
@@ -540,8 +539,8 @@ li { margin: 2px 0; }
       <li>Undo: one step per picked view, or one step per sheet</li>
     </ul>
 
-    <div class="callout warn"><strong>Watch out</strong>MSPE reads the hatch map once per Inventor session, from the standard of the first drawing that runs a drawing command. A drawing that uses a different standard ends Hatching without a message, and the leader commands report that the drawing style is not up to date. Restart Inventor to work in that drawing.</div>
-    <div class="callout warn"><strong>Watch out</strong>In <strong>Single View</strong>, picking a view with hatching turned off ends the pick loop.</div>
+    <div class="callout note"><strong>Note</strong>MSPE loads the hatch map for each drawing's active standard and reloads it automatically when the style library is saved, so drawings with different standards work in the same session.</div>
+    <div class="callout note"><strong>Note</strong>In <strong>Single View</strong>, picking a view with hatching turned off shows a message; pick another view or press <kbd>Esc</kbd>.</div>
     <div class="callout note"><strong>Note</strong>Map errors read <em>Could not build Hatch-Material Map [Style Name Not Found]</em> or <em>[HatchMap Is Empty]</em>. Check that the standard is saved to the style library with a hatch map.</div>
   </article>
 
@@ -560,7 +559,7 @@ li { margin: 2px 0; }
     <h3>How to run it</h3>
     <ol>
       <li>Click <strong>Create Material Leaders</strong></li>
-      <li>Close any hatch map or drawing style message; the command continues without hatching</li>
+      <li>If a message reads <em>Hatching will be skipped; leaders will still be created</em>, click <strong>OK</strong>; the command continues without hatching</li>
       <li>In <em>For how would you like to create material leaders?</em>, choose one option:
         <ul>
           <li><strong>Single Body</strong> (default): at <em>Select a Body</em>, click an edge of the body; the leader attaches to the midpoint of that edge</li>
@@ -570,11 +569,6 @@ li { margin: 2px 0; }
       <li>Keep picking, then press <kbd>Esc</kbd> to finish</li>
       <li>Drag leader text to its final position</li>
     </ol>
-
-    <h3>Options</h3>
-    <ul>
-      <li>Hold <kbd>Shift</kbd> while clicking the button to run in <a href="#gs-about">debug mode</a>; picks are then not grouped into undo steps or rolled back on error</li>
-    </ul>
 
     <h3>Results</h3>
     <ul>
@@ -598,7 +592,6 @@ li { margin: 2px 0; }
     <h3>How to run it</h3>
     <ol>
       <li>Click <strong>Update Material Leaders</strong></li>
-      <li>Close any hatch map or drawing style message; leader updates continue</li>
       <li>In <em>For how many views would you like to update material leaders?</em>, choose one option:
         <ul>
           <li><strong>Single View</strong>: pick views at <em>Select a DrawingView</em>, then press <kbd>Esc</kbd></li>
@@ -616,7 +609,7 @@ li { margin: 2px 0; }
       <li>No new leaders are added and hatching is not changed</li>
     </ul>
 
-    <div class="callout note"><strong>Note</strong><strong>Single View</strong> updates every MSPE leader on the sheet that holds the picked view.</div>
+    <div class="callout note"><strong>Note</strong>Leaders are matched to views by the edge they attach to. A leader that sits over a view but is not attached to one of its edges is skipped.</div>
   </article>
 
   <!-- ---------- Edit Material Remap ---------- -->
@@ -637,7 +630,7 @@ li { margin: 2px 0; }
       <li>To change a pair, click its <strong>Remapped To</strong> cell and pick a library material from the drop-down</li>
       <li>To delete pairs, select the rows and click <strong>Delete Selected</strong> or press <kbd>Delete</kbd></li>
       <li>To be asked again about materials you declined, click <strong>Clear Declined (n)</strong>; hover over it to see the declined names</li>
-      <li>Click <strong>OK</strong> to save the list, or <strong>Cancel</strong> to discard the edits</li>
+      <li>Click <strong>OK</strong> to save the list and any Clear Declined, or <strong>Cancel</strong> to discard all edits</li>
     </ol>
 
     <h3>Results</h3>
@@ -648,7 +641,6 @@ li { margin: 2px 0; }
     </ul>
 
     <div class="callout note"><strong>Note</strong>A pair whose replacement is no longer in the active library appears with a blank <strong>Remapped To</strong> cell. <strong>OK</strong> reports any blank rows; pick a material or delete the row.</div>
-    <div class="callout warn"><strong>Watch out</strong><strong>Clear Declined</strong> takes effect immediately, even if you then click <strong>Cancel</strong>.</div>
   </article>
 
 </section>
